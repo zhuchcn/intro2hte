@@ -1,0 +1,185 @@
+---
+title: "Introduction to Hight Throughtput Experiment Data Analysis"
+author: "Chenghao Zhu"
+date: "`r format(Sys.time(), format = '%m/%d/%Y')`"
+output: 
+    ioslides_presentation:
+        widescreen: true
+        css: css/styles.css
+---
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+<script>
+  $(document).ready(function() {
+    $('slide:not(.backdrop):not(.title-slide)').append('<div class=\"footnotes\">');
+
+    $('footnote').each(function(index) {
+      var text  = $(this).html();
+      var fnNum = (index+1).toString().sup();
+      $(this).html(text + fnNum);
+
+      var footnote   = fnNum + ': ' + $(this).attr('content') + '<br/>';
+      var oldContent = $(this).parents('slide').children('div.footnotes').html();
+      var newContent = oldContent + footnote;
+      $(this).parents('slide').children('div.footnotes').html(newContent);
+    });
+  });
+</script>
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+```
+
+## Biology and Data Science {.build}
+
+Data science is an interdisciplinary field that uses scientific methods, processes, algorithms and systems to extract knowledge and insights from data in various forms.
+
+![Bioinformatics venn](img/bioinformatics_venn.png)
+
+## Bioinformatics {.build}
+
+* Bioinformatics is an interdiciplinary field of biology, computer science, and statistics.
+* Bioinformatics using high through-put sequencing methods to study a large number of molecules in a biological specimen.
+
+## High Through-put Experiment Dadta {.build}
+
+* The start point of a high through-put experiment is usually raw sequencing data.
+* fastq files for microbiome, metagenomics, RNA seq, etc
+* mzML/mzXML MS files for proteomics (and **maybe** metabolomics)
+
+```{r flow-chart, fig.align='center'}
+library(DiagrammeR)
+
+grViz("
+digraph bio_flow{
+
+graph [rankdir = LR]
+
+node [shape = rectangle, fixedsize = true, width = 1.5, fontcolor = 'blue',
+      fontname = 'Helvetica', fillcolour = yellow, style = filled, 
+      color = '#AA6600', height = 1, fontsize=15 ]
+
+edge [fontname = 'Helvetica', fontsize=15, fontcolor = 'red']
+
+node [fillcolor='#AA660055']
+a [ label = 'Raw\nSequencing\nData' ]
+b [ label = 'Tabular\nData' ]
+c [ label = 'Statistic\nTest' ]
+d [ label = 'Visualizations' ]
+e [ label = 'Manuscript' ]
+
+a -> b [ label = 'Data\nProcessing' ]
+b -> c [ label = 'Data\nAnalysis' ]
+b -> d
+c -> e
+d -> e
+}
+")
+```
+
+## Data Processing and Analysis {.build}
+
+* Should be standardized, clear and reproducible.
+* High through-put experiments data processing is the assay- or experiment-dependent, but not study dependent. The data processing precedure doesn't change with the study design.
+* Proteomics: X!Tandem
+* Microbiome (16 amplicon): fastq-multx, cutadapt/trimmomatic/fastx-toolkit, DADA2
+* After we generate the tabular data from data processing, the data analysis step is study dependent. Different statistic model and visualization approaches can be used base on the study design.
+
+
+## Basic Principle of Data Science {.build}
+
+* Principle of tidy data
+* Reproducibility.
+* Why R.
+* Version Control (git)
+* Data structure of hight through-put experiment data
+
+## Tidy Data {.build}
+
+1. Each measured variable should be in one column.
+2. Each different observation of that variable should be in a different row.
+3. There should be one table for each "kind" of variable.
+4. If you have multiple tables, they should include a column in the table that allows them to be linked.
+
+<footnote content="Hadley Wickham, Tidy Data"></footnote>
+<footnote content="Jeff Leek, The Elements of Data Analytic Style"></footnote>
+
+## Tidy Data continue {.build}
+
+1. Each measured variable should be in one column.
+2. Each different observation of that variable should be in a different row.
+
+<div class="iframe-container">
+<iframe src="widget/clinical.html"></iframe>
+</div>
+
+## Messy Data Example {.build}
+
+![lipidome-messy](img/lipidomics-messy-data.png)
+
+## Reproducibility {.build}
+
+* <p class="emphesize">The raw data should be stored well and every analysis step should be documented. </p>
+
+* Reproducibility allows you to be validate you analysis, and collaborate with other people. 
+
+* Using programming language is the best way to make your analysis reproducible.
+
+    - SAS
+    - R
+    - Python
+    - Julia
+
+## Why R {.build}
+
+* R is a programming language designed for statistics and data analysis. R's native packages can support almost all basic statistics test (linear model, t test, correlation, etc). 
+* R has tremendous amount of additional packages on CRAN that extends the functionality of R for almost all fields (ecoloty, chemistry, engineering, etc.)
+* The bioconductor project has also a lot of packages designated for bioinformatics, contributed by scientists all over the world.
+* Very popular in academic community.
+* Almost all R packages have very detailed documentations
+* Ability to generate scientific report/presentations in different forms, including html, pdf, slides, and word docx.
+
+## Why R cont.
+
+R is also a good choice for a career!
+
+![Programming Language Pay Rank](img/top10language.jpeg)
+
+## Version control
+
+* <i class="fa fa-git"></i> Git: a distributed version control system
+* <i class="fa fa-github"></i> Github, a web-based hosting service for git
+    - Pros: 
+        + Use as a static html service
+        + Multiple people can work on the same project
+    - Cons:
+        + Public to the world unless you pay
+        + Single file size limit
+
+## Metabase
+
+* The Metabase is a R pacakge provides a solution to store, handle, analyze, and visualize data from quantitative experiments such as metabolomics and proteomics.
+* Now only the metabolomics data is well embeded, but theoretically it's able to support any quantitative experiment data, including metabolomics, proteomics, glycomics, nutrient data, anthropometric and clinical data, biochemical assays.
+* github repo: github.com/zhuchcn/Metabase
+
+## Hight Thoughput Experiment Data Structure
+
+Almost all high thoughput experiment data have 3 tables:
+
+* A table with information to each feature (pink box)
+* A table with information to each sample (blue box)
+* A pure numeric table of the intensity/concentration/abundance of each feature in each sample (gree box)
+
+<img src="img/lipidome-data-structure.png" alt="HTE Data Structure"/>
+
+## Metabase Design
+
+* The Metabase uses the **Object Oriented Design**. 
+
+![Metabase Design](img/data_structure.png)
+
+## Documentation
+
+<i class="fa fa-book"></i>  [www.chenghaozhu.net](www.chenghaozhu.net)
