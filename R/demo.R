@@ -32,5 +32,6 @@ experiment_data(mset)$internal_standards = internal_standards
 experiment_data(mset)
 mset = calibrate_lipidomics_wcmc(mset, cid = "InChIKey", 
                                  class = "class", ESI = "ESI")
+# -------- if detected in both modes, keep the one with lower cv ---------------
 mset = filter_by_cv(mset, cv = "qc_cv", cid = "InChIKey")
 plot_qc(mset, mean = "qc_mean", sd = "qc_sd", cv = "qc_cv")
