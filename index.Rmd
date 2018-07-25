@@ -242,7 +242,7 @@ R is also a good choice for a career!
 * The Metabase is a R pacakge provides a solution to store, handle, analyze, and visualize data from quantitative experiments such as metabolomics and proteomics.
 </div>
 <div>
-* Now only the metabolomics data is well embeded, but theoretically it's able to support any quantitative experiment data, including metabolomics, proteomics, glycomics, nutrient data, anthropometric and clinical data, biochemical assays.
+* Now only the metabolomics data is well implemented, but it will be able to support any quantitative experiment data, including metabolomics, proteomics, glycomics, nutrient data, anthropometric and clinical data, biochemical assays.
 </div>
 <div>
 * github repo: github.com/zhuchcn/Metabase
