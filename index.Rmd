@@ -273,7 +273,7 @@ Almost all high thoughput experiment data have 3 tables:
 
 ## Classes Roadmap
 
-Only MetabolomicsSet, LipidomicsSet and MultiSet are available now. ProteomicsSet and GLycomicsSet are not done yet. <p class="red" style="display:inline;text-decoration:underline">*Collabration is very welcome!*</p>
+Only MetabolomicsSet, LipidomicsSet and MultiSet are available now. ProteomicsSet and GLycomicsSet are not done yet.
 
 <br />
 
